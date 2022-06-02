@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="brochure"
+            type="com.android.sample.bonial.domain.Brochure" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/item_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="@color/black_translucent_60"
+        android:foreground="?attr/selectableItemBackground"
+        android:theme="@style/Theme.MaterialComponents.Light"
+        app:cardBackgroundColor="@color/black_translucent_60"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="6dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/poster_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foreground="?attr/selectableItemBackground"
+            android:orientation="vertical"
+            app:imageUrl="@{brochure.image}"
+            tools:ignore="UnusedAttribute">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/poster_brochure"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="1"
+                android:padding="8dp"
+                android:text="@{brochure.retailerName}"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/poster_brochure"
+                tools:text="Zootopia" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>
