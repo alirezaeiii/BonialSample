@@ -31,7 +31,6 @@ class BrochureFragment : BaseFragment<BrochureViewModel, FragmentBrochureBinding
         super.onCreateView(inflater, container, savedInstanceState)
         val brochureAdapter = BrochureAdapter()
         binding.recyclerView.apply {
-            setHasFixedSize(true)
             layoutManager = GridLayoutManager(
                 requireContext(),
                 if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -42,7 +41,7 @@ class BrochureFragment : BaseFragment<BrochureViewModel, FragmentBrochureBinding
             ).apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return if (brochureAdapter.isPremium(position)) spanCount else 1
+                        return if (brochureAdapter.isPremium(position)) 1 else spanCount
                     }
                 }
             }
