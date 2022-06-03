@@ -7,7 +7,6 @@ import com.squareup.moshi.Json
 sealed class Content(@Json(name = "contentType") val type: ContentType) {
 
     data class NetworkBrochure(
-        val contentType: String,
         val content: BrochureContent
     ) : Content(ContentType.brochure), BrochureConverter {
         override fun convert(): Brochure {
@@ -22,7 +21,6 @@ sealed class Content(@Json(name = "contentType") val type: ContentType) {
     }
 
     data class BrochurePremium(
-        val contentType: String,
         val content: BrochureContent
     ) : Content(ContentType.brochurePremium), BrochureConverter {
         override fun convert(): Brochure {
