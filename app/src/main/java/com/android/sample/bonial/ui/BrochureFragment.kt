@@ -52,6 +52,8 @@ class BrochureFragment : BaseFragment<BrochureViewModel, FragmentBrochureBinding
             viewModel.stateFlow.collect {
                 if (it is ViewState.Success) {
                     brochureAdapter.submitList(it.data)
+                } else if(it is ViewState.Error) {
+                    binding.errorMsg.text = it.message
                 }
             }
         }
