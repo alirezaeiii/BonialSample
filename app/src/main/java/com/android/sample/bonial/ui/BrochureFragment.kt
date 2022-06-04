@@ -14,7 +14,6 @@ import com.android.sample.bonial.common.ViewState
 import com.android.sample.bonial.databinding.FragmentBrochureBinding
 import com.android.sample.bonial.viewmodel.BrochureViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
