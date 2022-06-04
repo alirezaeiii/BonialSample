@@ -40,7 +40,7 @@ class BrochureFragment : BaseFragment<BrochureViewModel, FragmentBrochureBinding
             ).apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return if (brochureAdapter.isPremium(position)) 1 else spanCount
+                        return if (brochureAdapter.isPremium(position)) spanCount else 1
                     }
                 }
             }
