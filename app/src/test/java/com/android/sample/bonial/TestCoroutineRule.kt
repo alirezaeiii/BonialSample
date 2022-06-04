@@ -8,6 +8,7 @@ import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
 @ExperimentalCoroutinesApi
+@Suppress("DEPRECATION")
 class TestCoroutineRule : TestRule {
 
     private val testCoroutineDispatcher = TestCoroutineDispatcher()
