@@ -11,13 +11,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.android.sample.bonial.BR
 
-abstract class BaseFragment<VM: ViewModel, T: ViewDataBinding>(
+abstract class BaseFragment<VM: ViewModel, VB: ViewDataBinding>(
     @LayoutRes private val layoutId: Int
 ) : Fragment() {
 
     protected abstract val viewModel: VM
 
-    private var _binding: T? = null
+    private var _binding: VB? = null
 
     protected val binding get() = _binding!!
 
