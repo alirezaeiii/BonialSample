@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class FilterBrochureUseCase @Inject constructor(
-    private val brochureRepository: FilterBrochureRepository
+    private val filterBrochureRepository: FilterBrochureRepository
 ): UseCase {
     override fun invoke(): Flow<ViewState<List<Brochure>>> =
-        brochureRepository.getBrochures()
+        filterBrochureRepository.getBrochures()
 }
