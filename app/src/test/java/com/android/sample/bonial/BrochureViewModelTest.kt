@@ -6,7 +6,10 @@ import com.android.sample.bonial.common.ViewState
 import com.android.sample.bonial.extention.isNetworkAvailable
 import com.android.sample.bonial.network.ApiService
 import com.android.sample.bonial.repository.BrochureRepositoryImpl
+import com.android.sample.bonial.repository.FilterBrochureRepositoryImpl
 import com.android.sample.bonial.response.BrochureResponse
+import com.android.sample.bonial.usecase.FilterBrochureUseCase
+import com.android.sample.bonial.usecase.GetBrochureUseCase
 import com.android.sample.bonial.viewmodel.BrochureViewModel
 import io.mockk.every
 import io.mockk.mockkStatic
@@ -50,12 +53,9 @@ class BrochureViewModelTest {
                 BrochureResponse.Embedded(
                     emptyList())))
         }
-
-        val repository = BrochureRepositoryImpl(context, api, Dispatchers.Main)
-
         testCoroutineRule.pauseDispatcher()
 
-        val viewModel = BrochureViewModel(repository)
+        val viewModel = getBrochureViewModel()
 
         assertThat(viewModel.stateFlow.value, `is`(ViewState.Loading))
 
@@ -75,11 +75,9 @@ class BrochureViewModelTest {
         testCoroutineRule.runBlockingTest {
             `when`(api.getBrochures()).thenThrow(RuntimeException(""))
         }
-        val repository = BrochureRepositoryImpl(context, api, Dispatchers.Main)
-
         testCoroutineRule.pauseDispatcher()
 
-        val viewModel = BrochureViewModel(repository)
+        val viewModel = getBrochureViewModel()
 
         assertThat(viewModel.stateFlow.value, `is`(ViewState.Loading))
 
@@ -96,16 +94,24 @@ class BrochureViewModelTest {
         every {
             context.isNetworkAvailable()
         } returns false
-        val repository = BrochureRepositoryImpl(context, api, Dispatchers.Main)
-
         testCoroutineRule.pauseDispatcher()
 
-        val viewModel = BrochureViewModel(repository)
+        val viewModel = getBrochureViewModel()
 
         assertThat(viewModel.stateFlow.value, `is`(ViewState.Loading))
 
         testCoroutineRule.resumeDispatcher()
 
         assertThat(viewModel.stateFlow.value, `is`(ViewState.Error(errorMsg)))
+    }
+
+    private fun getBrochureViewModel() : BrochureViewModel {
+        val brochureRepository = BrochureRepositoryImpl(context, api, Dispatchers.Main)
+        val getBrochureUseCase = GetBrochureUseCase(brochureRepository)
+
+        val filterBrochureRepository = FilterBrochureRepositoryImpl(context, api, Dispatchers.Main)
+        val filterBrochureUseCase = FilterBrochureUseCase(filterBrochureRepository)
+
+        return BrochureViewModel(getBrochureUseCase, filterBrochureUseCase)
     }
 }
