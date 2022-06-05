@@ -29,6 +29,19 @@ class BrochureViewModel @Inject constructor(
         refreshBrochures()
     }
 
+    fun enableFilter() {
+        isFilter = isFilter.not()
+        filter()
+    }
+
+    fun filter() {
+        if (isFilter) {
+            refreshFilterBrochures()
+        } else {
+            refreshBrochures()
+        }
+    }
+
     private fun refreshBrochures() {
         refresh(getBrochureUseCase)
     }
@@ -42,19 +55,6 @@ class BrochureViewModel @Inject constructor(
             useCase.invoke().collect {
                 _stateFlow.tryEmit(it)
             }
-        }
-    }
-
-    fun enableFilter() {
-        isFilter = isFilter.not()
-        filter()
-    }
-
-    fun filter() {
-        if (isFilter) {
-            refreshFilterBrochures()
-        } else {
-            refreshBrochures()
         }
     }
 }
