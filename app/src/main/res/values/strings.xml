@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">BonialSample</string>
+    <string name="app_name">Brochures</string>
     <string name="failed_loading_msg">Something went wrong</string>
     <string name="failed_network_msg">No internet connection</string>
+    <string name="action_filter">filter</string>
     <string name="retry">Retry</string>
 </resources>

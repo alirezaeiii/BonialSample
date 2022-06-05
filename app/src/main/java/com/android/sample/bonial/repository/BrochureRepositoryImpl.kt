@@ -8,13 +8,14 @@ import com.android.sample.bonial.domain.Brochure
 import com.android.sample.bonial.domain.BrochureConverter
 import com.android.sample.bonial.extention.isNetworkAvailable
 import com.android.sample.bonial.network.ApiService
+import com.android.sample.bonial.response.Content
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class BrochureRepositoryImpl @Inject constructor(
+open class BrochureRepositoryImpl @Inject constructor(
     private val context: Context,
     private val service: ApiService,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
@@ -25,12 +26,8 @@ class BrochureRepositoryImpl @Inject constructor(
         if (context.isNetworkAvailable()) {
             try {
                 val response = service.getBrochures()
-                val brochures =
-                    response.embedded.contents.filterIsInstance<BrochureConverter>().map {
-                        it.convert()
-                    }.filter {
-                        it.distance < 5
-                    }
+                val brochures = filter(response.embedded.contents)
+
                 emit(ViewState.Success(brochures))
             } catch (t: Throwable) {
                 emit(ViewState.Error(context.getString(R.string.failed_loading_msg)))
@@ -39,4 +36,9 @@ class BrochureRepositoryImpl @Inject constructor(
             emit(ViewState.Error(context.getString(R.string.failed_network_msg)))
         }
     }.flowOn(ioDispatcher)
+
+    open fun filter(content: List<Content>) =
+        content.filterIsInstance<BrochureConverter>().map {
+            it.convert()
+        }
 }

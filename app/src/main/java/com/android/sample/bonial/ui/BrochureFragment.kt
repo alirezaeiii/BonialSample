@@ -2,9 +2,8 @@ package com.android.sample.bonial.ui
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,6 +27,8 @@ class BrochureFragment : BaseFragment<BrochureViewModel, FragmentBrochureBinding
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
+        setHasOptionsMenu(true)
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         val brochureAdapter = BrochureAdapter()
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(
@@ -57,5 +58,17 @@ class BrochureFragment : BaseFragment<BrochureViewModel, FragmentBrochureBinding
             }
         }
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.filter_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_filter -> viewModel.enableFilter()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
