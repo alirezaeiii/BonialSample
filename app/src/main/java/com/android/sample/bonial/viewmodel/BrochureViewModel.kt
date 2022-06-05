@@ -23,7 +23,7 @@ class BrochureViewModel @Inject constructor(
     val stateFlow: StateFlow<ViewState<List<Brochure>>>
         get() = _stateFlow
 
-    private var isFilter = false
+    var isFilter = false
 
     init {
         refreshBrochures()

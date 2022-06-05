@@ -62,13 +62,22 @@ class BrochureFragment : BaseFragment<BrochureViewModel, FragmentBrochureBinding
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.filter_menu, menu)
+        val menuItem = menu.findItem(R.id.action_filter)
+        menuItem.setFilterColor()
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_filter -> viewModel.enableFilter()
+            R.id.action_filter -> {
+                viewModel.enableFilter()
+                item.setFilterColor()
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun MenuItem.setFilterColor() {
+        setIcon(if (viewModel.isFilter) R.drawable.ic_filter else R.drawable.ic_no_filter)
     }
 }
