@@ -1,4 +1,4 @@
-# Bonial Sample
+# Brochures
 A sample to showcase Kotlin, MVVM, Hilt, Navigation, Coroutines, StateFlow, Retrofit, DataBinding and Unit test.
 
 ## Features
