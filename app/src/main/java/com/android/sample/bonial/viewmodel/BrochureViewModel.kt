@@ -8,6 +8,7 @@ import com.android.sample.bonial.usecase.FilterBrochureUseCase
 import com.android.sample.bonial.usecase.GetBrochureUseCase
 import com.android.sample.bonial.usecase.UseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -24,6 +25,8 @@ class BrochureViewModel @Inject constructor(
         get() = _stateFlow
 
     var isFilter = false
+
+    private var job: Job? = null
 
     init {
         refreshBrochures()
@@ -51,7 +54,8 @@ class BrochureViewModel @Inject constructor(
     }
 
     private fun refresh(useCase: UseCase) {
-        viewModelScope.launch {
+        job?.cancel()
+        job = viewModelScope.launch {
             useCase.invoke().collect {
                 _stateFlow.tryEmit(it)
             }
