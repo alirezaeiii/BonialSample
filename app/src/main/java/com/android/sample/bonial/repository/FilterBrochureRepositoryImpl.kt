@@ -1,20 +1,24 @@
 package com.android.sample.bonial.repository
 
-import android.content.Context
+import com.android.sample.bonial.common.ViewState
+import com.android.sample.bonial.database.BrochureDao
+import com.android.sample.bonial.database.asDomainModel
 import com.android.sample.bonial.di.IoDispatcher
 import com.android.sample.bonial.domain.Brochure
-import com.android.sample.bonial.network.ApiService
-import com.android.sample.bonial.response.Content
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class FilterBrochureRepositoryImpl @Inject constructor(
-    context: Context,
-    service: ApiService,
-    @IoDispatcher ioDispatcher: CoroutineDispatcher
-) : FilterBrochureRepository, BrochureRepositoryImpl(context, service, ioDispatcher) {
+    private val dao: BrochureDao,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+) : FilterBrochureRepository {
 
-    override fun filter(content: List<Content>): List<Brochure> =
-        super.filter(content).filter { it.distance < 5 }
-
+    override fun getBrochures(): Flow<ViewState<List<Brochure>>> = flow {
+        emit(ViewState.Loading)
+        val cache = dao.getFilteredBrochures()
+        emit(ViewState.Success(cache.asDomainModel()))
+    }.flowOn(ioDispatcher)
 }

@@ -14,12 +14,16 @@ import com.android.sample.bonial.databinding.FragmentBrochureBinding
 import com.android.sample.bonial.viewmodel.BrochureViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class BrochureFragment : BaseFragment<BrochureViewModel, FragmentBrochureBinding>
     (R.layout.fragment_brochure) {
 
     override val viewModel: BrochureViewModel by viewModels()
+
+    @Inject
+    lateinit var brochureAdapter: BrochureAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,34 +33,8 @@ class BrochureFragment : BaseFragment<BrochureViewModel, FragmentBrochureBinding
         super.onCreateView(inflater, container, savedInstanceState)
         setHasOptionsMenu(true)
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-        val brochureAdapter = BrochureAdapter()
-        binding.recyclerView.apply {
-            layoutManager = GridLayoutManager(
-                requireContext(),
-                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    2
-                } else {
-                    3
-                }
-            ).apply {
-                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return if (brochureAdapter.isPremium(position)) spanCount else 1
-                    }
-                }
-            }
-            adapter = brochureAdapter
-        }
-
-        lifecycleScope.launch {
-            viewModel.stateFlow.collect {
-                if (it is ViewState.Success) {
-                    brochureAdapter.submitList(it.data)
-                } else if (it is ViewState.Error) {
-                    binding.errorMsg.text = it.message
-                }
-            }
-        }
+        handleResults()
+        initUiElements()
         return binding.root
     }
 
@@ -75,6 +53,38 @@ class BrochureFragment : BaseFragment<BrochureViewModel, FragmentBrochureBinding
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun handleResults() {
+        lifecycleScope.launch {
+            viewModel.stateFlow.collect {
+                if (it is ViewState.Success) {
+                    brochureAdapter.submitList(it.data)
+                } else if (it is ViewState.Error) {
+                    binding.errorMsg.text = it.message
+                }
+            }
+        }
+    }
+
+    private fun initUiElements() {
+        binding.recyclerView.apply {
+            layoutManager = GridLayoutManager(
+                requireContext(),
+                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    2
+                } else {
+                    3
+                }
+            ).apply {
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (brochureAdapter.isPremium(position)) spanCount else 1
+                    }
+                }
+            }
+            adapter = brochureAdapter
+        }
     }
 
     private fun MenuItem.setFilterColor() {
