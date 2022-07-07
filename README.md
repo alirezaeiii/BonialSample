@@ -1,5 +1,5 @@
 # Brochures-Cache
-A sample to showcase Kotlin, MVVM, Hilt, Navigation, Coroutines, StateFlow, Retrofit, DataBinding and Unit test.
+A sample to showcase Kotlin, MVVM, Hilt, Navigation, Room, Coroutines, StateFlow, Retrofit, DataBinding and Unit test.
 
 ## Features
 * MVVM Architecture + Repository design Pattern.
