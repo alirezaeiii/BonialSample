@@ -1,5 +1,5 @@
-# Brochures
-A sample to showcase Kotlin, MVVM, Hilt, Navigation, Coroutines, StateFlow, Retrofit, DataBinding and Unit test.
+# Brochures-Cache
+A sample to showcase Kotlin, MVVM, Hilt, Navigation, Room, Coroutines, StateFlow, Retrofit, DataBinding and Unit test.
 
 ## Features
 * MVVM Architecture + Repository design Pattern.
@@ -10,8 +10,9 @@ Local unit testing is done for ViewModel layer.
 
 ## Libraries
 * [Android Jetpack](https://developer.android.com/jetpack)
-   * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) ViewModel is designed to store and manage UI-related data in a lifecycle conscious way. This allows data to survive configuration changes such as screen rotations.
+   * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) is designed to store and manage UI-related data in a lifecycle conscious way. This allows data to survive configuration changes such as screen rotations.
    * [DataBinding](https://developer.android.com/topic/libraries/data-binding/) is a Library in the support library that allows you to bind UI components in your layouts to data sources in your app using a declarative format rather than programmatically.
+   * [Room](https://developer.android.com/topic/libraries/architecture/room) is a library for data storage persistence which provides an abstraction layer over SQLite.
    * [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) is a dependency injection library for Android that reduces the boilerplate of doing manual dependency injection in your project.
    * [Navigation](https://developer.android.com/guide/navigation/) Android Jetpack's Navigation component helps you implement effective navigation.
 * [Kotlin coroutines](https://developer.android.com/kotlin/coroutines) Executing code asynchronously.
