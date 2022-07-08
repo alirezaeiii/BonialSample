@@ -33,7 +33,7 @@ open class BrochureRepositoryImpl @Inject constructor(
             emit(ViewState.Success(cache.asDomainModel()))
             try {
                 // ****** STEP 2: MAKE NETWORK CALL, SAVE RESULT TO CACHE ******
-                refresh(true)
+                refresh()
                 // ****** STEP 3: VIEW CACHE ******
                 emit(ViewState.Success(dao.getAllBrochures().asDomainModel()))
             } catch (t: Throwable) {
@@ -43,7 +43,7 @@ open class BrochureRepositoryImpl @Inject constructor(
             if (context.isNetworkAvailable()) {
                 try {
                     // ****** STEP 1: MAKE NETWORK CALL, SAVE RESULT TO CACHE ******
-                    refresh(false)
+                    refresh()
                     // ****** STEP 2: VIEW CACHE ******
                     emit(ViewState.Success(dao.getAllBrochures().asDomainModel()))
                 } catch (t: Throwable) {
@@ -55,14 +55,12 @@ open class BrochureRepositoryImpl @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
-    private suspend fun refresh(shouldDeleteBrochures: Boolean) {
+    private suspend fun refresh() {
         val response = service.getBrochures()
         val brochures = response.embedded.contents.filterIsInstance<BrochureConverter>().map {
             it.convert()
         }
-        if(shouldDeleteBrochures) {
-            dao.deleteBrochures()
-        }
+        dao.deleteBrochures()
         dao.insertBrochures(brochures.asDatabaseModel())
     }
 }
