@@ -12,12 +12,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.bumptech.glide.request.transition.Transition
 
-@BindingAdapter("showLoading")
-fun <T> View.showLoading(viewState: ViewState<T>?) {
-    visibility = if (viewState is ViewState.Loading) View.VISIBLE else View.GONE
-}
-
-
 @BindingAdapter("showError")
 fun <T> View.showError(viewState: ViewState<T>?) {
     visibility = if (viewState is ViewState.Error) View.VISIBLE else View.GONE

@@ -58,13 +58,23 @@ class BrochureFragment : BaseFragment<BrochureViewModel, FragmentBrochureBinding
     private fun handleResults() {
         lifecycleScope.launch {
             viewModel.stateFlow.collect {
-                if (it is ViewState.Success) {
-                    brochureAdapter.submitList(it.data)
-                } else if (it is ViewState.Error) {
-                    binding.errorMsg.text = it.message
+                when (it) {
+                    is ViewState.Loading -> showLoading(true)
+                    is ViewState.Success -> {
+                        brochureAdapter.submitList(it.data)
+                        showLoading(false)
+                    }
+                    is ViewState.Error -> {
+                        binding.errorMsg.text = it.message
+                        showLoading(false)
+                    }
                 }
             }
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.loadingSpinner.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun initUiElements() {
