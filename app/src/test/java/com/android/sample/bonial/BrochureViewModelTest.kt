@@ -3,6 +3,7 @@ package com.android.sample.bonial
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.android.sample.bonial.common.ViewState
+import com.android.sample.bonial.database.BrochureDao
 import com.android.sample.bonial.extention.isNetworkAvailable
 import com.android.sample.bonial.network.ApiService
 import com.android.sample.bonial.repository.BrochureRepositoryImpl
@@ -41,6 +42,9 @@ class BrochureViewModelTest {
 
     @Mock
     private lateinit var context: Context
+
+    @Mock
+    private lateinit var dao: BrochureDao
 
     @Test
     fun givenServerResponse200_whenFetch_shouldReturnSuccess() {
@@ -106,10 +110,10 @@ class BrochureViewModelTest {
     }
 
     private fun getBrochureViewModel() : BrochureViewModel {
-        val brochureRepository = BrochureRepositoryImpl(context, api, Dispatchers.Main)
+        val brochureRepository = BrochureRepositoryImpl(context, api, dao, Dispatchers.Main)
         val getBrochureUseCase = GetBrochureUseCase(brochureRepository)
 
-        val filterBrochureRepository = FilterBrochureRepositoryImpl(context, api, Dispatchers.Main)
+        val filterBrochureRepository = FilterBrochureRepositoryImpl(dao, Dispatchers.Main)
         val filterBrochureUseCase = FilterBrochureUseCase(filterBrochureRepository)
 
         return BrochureViewModel(getBrochureUseCase, filterBrochureUseCase)
