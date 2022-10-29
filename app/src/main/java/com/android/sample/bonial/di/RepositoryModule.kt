@@ -6,12 +6,9 @@ import com.android.sample.bonial.repository.FilterBrochureRepository
 import com.android.sample.bonial.repository.FilterBrochureRepositoryImpl
 import dagger.Binds
 import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
 
     @Singleton

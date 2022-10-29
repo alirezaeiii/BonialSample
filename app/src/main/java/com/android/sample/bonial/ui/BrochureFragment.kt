@@ -1,5 +1,6 @@
 package com.android.sample.bonial.ui
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
@@ -7,23 +8,32 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.android.sample.bonial.Application
 import com.android.sample.bonial.R
 import com.android.sample.bonial.base.BaseFragment
 import com.android.sample.bonial.common.ViewState
 import com.android.sample.bonial.databinding.FragmentBrochureBinding
 import com.android.sample.bonial.viewmodel.BrochureViewModel
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@AndroidEntryPoint
 class BrochureFragment : BaseFragment<BrochureViewModel, FragmentBrochureBinding>
     (R.layout.fragment_brochure) {
 
-    override val viewModel: BrochureViewModel by viewModels()
+    @Inject
+    lateinit var factory: BrochureViewModel.Factory
+
+    override val viewModel: BrochureViewModel by viewModels(){
+        BrochureViewModel.provideFactory(factory)
+    }
 
     @Inject
     lateinit var brochureAdapter: BrochureAdapter
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (context.applicationContext as Application).component.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
