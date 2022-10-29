@@ -23,7 +23,7 @@ class BrochureFragment : BaseFragment<BrochureViewModel, FragmentBrochureBinding
     @Inject
     lateinit var factory: BrochureViewModel.Factory
 
-    override val viewModel: BrochureViewModel by viewModels(){
+    override val viewModel: BrochureViewModel by viewModels {
         BrochureViewModel.provideFactory(factory)
     }
 
